@@ -80,6 +80,13 @@ class DummyController extends Controller
         return view('books.edit', compact('book', 'bookStatuses'));
     }
     
+    /**
+     * Update an existing resource
+     *
+     * @param StoreBook $request StoreBook instance
+     * @param int $id Book ID
+     * @return string
+     */
     public function update(StoreBook $request, $id)
     {
         try {
@@ -91,6 +98,19 @@ class DummyController extends Controller
         $book->update($request->prepared());
         
         return '';
+    }
+    
+    public function destroy($id)
+    {
+        try {
+            $book = Book::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return sprintf("%d: %s", $e->getCode(), $e->getMessage());
+        }
+        
+        $book->delete();
+        
+        return redirect()->route('books.index');
     }
     
     public function searchByStatus(string $status)
