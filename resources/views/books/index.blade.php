@@ -22,9 +22,18 @@
                         <td>{{ $book->author }}</td>
                         <td>{{ ucwords($book->formatted_status) }}</td>
                         <td>
-                            <a href="{{ route('books.destroy', ['book' => $book->id]) }}"><i class="fa fa-trash"></i></a>
+                            <form class="d-inline" action="{{ route('books.destroy', ['book' => $book->id]) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="id" value="{{ $book->id }}">
+                                <button type="submit" class="border-0 text-secondary">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
                             <span class="mx-2">|</span>
-                            <a href="{{ route('books.edit', ['book' => $book->id]) }}"><i class="fa fa-pencil"></i></a>
+                            <a role="button" class="text-secondary" href="{{ route('books.edit', ['book' => $book->id]) }}">
+                                <i class="fa fa-pencil"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach
