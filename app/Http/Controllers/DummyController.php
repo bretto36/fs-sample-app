@@ -126,12 +126,24 @@ class DummyController extends Controller
         return redirect()->route('books.index')->with('success', sprintf('Book %s has been deleted', $book->title));
     }
     
+    /**
+     * Get the books based on status.
+     *
+     * @param string $status Status string
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function searchByStatus(string $status)
     {
         if (! $status) {
             return response()->json([
                 'error' => 'Status cannot be empty'
             ]);
+        }
+        
+        if (! array_key_exists($status, BookStatus::toArray())) {
+            return response()->json([
+                'error' => sprintf('Status: %s not found', $status)
+            ], 404);
         }
         
         return Book::filterByStatus($status)->all();
