@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($books as $book)
+                @foreach($paginatedBooks as $book)
                     <tr>
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->author }}</td>
@@ -39,5 +39,6 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $paginatedBooks->links() }}
     </div>
 @endsection
