@@ -9,7 +9,11 @@ Please use the @TODO to find the things we are wanting you to complete
 - Make an api route where someone can get their books (needs to be filtered by current status only)
 - Make an api route where someone can get the details of 1 book by id
 
-## TODO
+### Installation
+- Update composer, as I've added a package for Enum's.
+- Run `php artisan migrate --seed`. This will generate dummy/fake data for Books.
+
+### TODO
 - [ ] Add tests
 - [ ] Using of token guard needs registration and login. Check below my suggestion:
 
