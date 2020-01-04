@@ -9,5 +9,18 @@ Please use the @TODO to find the things we are wanting you to complete
 - Make an api route where someone can get their books (needs to be filtered by current status only)
 - Make an api route where someone can get the details of 1 book by id
 
+## TODO
+- [ ] Add tests
+- [ ] Using of token guard needs registration and login. Check below my suggestion:
+
+#### My suggestion
+Instead of using User credentials, if we use request params to generate authorization key, then the API will be accessible publicly.
+- Create an endpoint
+    - for auth key generation based on request params. This also stores the request params in serialised format
+    along with the generated token in database.
+    - By default we store the token validity in the above table as well,
+    which means the generated token has a expiry of certain time. Once it's expired, then any
+    requests will get a new token.
+
 #### References
 - https://laravel.com/docs/6.x/api-authentication - use the token guard here
