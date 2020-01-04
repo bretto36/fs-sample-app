@@ -6,8 +6,8 @@ use App\Book;
 use App\Enums\BookStatus;
 use App\Helpers\CollectionHelper;
 use App\Http\Requests\StoreBook;
+use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use InvalidArgumentException;
 
 class DummyController extends Controller
 {
@@ -60,7 +60,9 @@ class DummyController extends Controller
         try {
             $book = Book::firstOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return sprintf("%d: %s", $e->getCode(), $e->getMessage());
+            return response()->json([
+                'error' => 'Resource not found'
+            ], 404);
         }
         
         return $book->toArray();
@@ -77,7 +79,9 @@ class DummyController extends Controller
         try {
             $book = Book::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return sprintf("%d: %s", $e->getCode(), $e->getMessage());
+            return response()->json([
+                'error' => 'Resource not found'
+            ], 404);
         }
     
         $bookStatuses = BookStatus::toSelectArray();
@@ -97,7 +101,9 @@ class DummyController extends Controller
         try {
             $book = Book::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return sprintf("%d: %s", $e->getCode(), $e->getMessage());
+            return response()->json([
+                'error' => 'Resource not found'
+            ], 404);
         }
         
         $book->update($request->prepared());
@@ -110,7 +116,9 @@ class DummyController extends Controller
         try {
             $book = Book::findOrFail($id);
         } catch (ModelNotFoundException $e) {
-            return sprintf("%d: %s", $e->getCode(), $e->getMessage());
+            return response()->json([
+                'error' => 'Resource not found'
+            ], 404);
         }
         
         $book->delete();
@@ -121,7 +129,9 @@ class DummyController extends Controller
     public function searchByStatus(string $status)
     {
         if (! $status) {
-            throw new InvalidArgumentException("Status cannot be empty");
+            return response()->json([
+                'error' => 'Status cannot be empty'
+            ]);
         }
         
         return Book::filterByStatus($status)->all();
