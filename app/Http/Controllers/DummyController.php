@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Enums\BookStatus;
+use App\Helpers\CollectionHelper;
 use App\Http\Requests\StoreBook;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
@@ -12,9 +13,13 @@ class DummyController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        $books = Book::all()->sortBy('title');
+        $total = $books->count();
+        $pageSize = 10;
         
-        return view('books.index', compact('books'));
+        $paginatedBooks = CollectionHelper::paginate($books, $total, $pageSize);
+        
+        return view('books.index', compact('paginatedBooks'));
     }
     
     /**
@@ -41,7 +46,7 @@ class DummyController extends Controller
         $book = Book::create($request->prepared());
         $bookStatuses = BookStatus::toSelectArray();
         
-        return redirect()->route('books.edit', compact('book', 'bookStatuses'));
+        return redirect()->route('books.edit', compact('book', 'bookStatuses'))->with('success', 'New book has been added.');
     }
     
     /**
@@ -97,7 +102,7 @@ class DummyController extends Controller
         
         $book->update($request->prepared());
         
-        return '';
+        return redirect()->route('books.index')->with('success', 'Book has been updated');
     }
     
     public function destroy($id)
@@ -110,7 +115,7 @@ class DummyController extends Controller
         
         $book->delete();
         
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')->with('success', sprintf('Book %s has been deleted', $book->title));
     }
     
     public function searchByStatus(string $status)
