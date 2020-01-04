@@ -70,6 +70,11 @@
         </nav>
 
         <main class="py-4">
+            <div class="container">
+                @flash
+                @endflash
+            </div>
+
             @yield('content')
         </main>
     </div>
